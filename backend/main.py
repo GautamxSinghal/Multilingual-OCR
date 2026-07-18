@@ -5,6 +5,7 @@ import docx  # python-docx
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from dotenv import load_dotenv
 from PIL import Image
 from google import genai
@@ -31,7 +32,8 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {"status": "Multilingual OCR API is running"}
+    index_path = os.path.join(os.path.dirname(__file__), "..", "frontend", "index.html")
+    return FileResponse(index_path)
 
 def extract_images_from_pdf(pdf_bytes):
     """Convert all pages of PDF to PIL Images"""
