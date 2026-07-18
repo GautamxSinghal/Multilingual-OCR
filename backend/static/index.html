@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multilingual OCR | Hindi, English, Urdu, Farsi</title>
+    <meta name="description"
+        content="Premium multilingual OCR powered by AI. Extract text from images, PDFs, and DOCX in Hindi, English, Urdu, and Farsi with stunning accuracy.">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+
+    <!-- Animated Background Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Custom Cursor Glow -->
+    <div class="cursor-glow" id="cursor-glow"></div>
+
+    <!-- Smooth Scroll Wrapper -->
+    <div id="smooth-wrapper">
+
+        <header data-anim="fade-up">
+            <h1 data-anim="split-text">Multilingual OCR</h1>
+            <p class="subtitle" data-anim="fade-up" data-delay="0.2">Solid-proof character recognition for Hindi,
+                English, Urdu & Farsi.</p>
+            <!-- Feature Badges -->
+            <div class="feature-badges" data-anim="stagger-up" data-delay="0.4">
+                <span class="badge">🇮🇳 Hindi</span>
+                <span class="badge">🇬🇧 English</span>
+                <span class="badge">🇵🇰 Urdu</span>
+                <span class="badge">🇮🇷 Farsi</span>
+            </div>
+        </header>
+
+        <main class="container">
+
+            <!-- Upload Zone -->
+            <div class="glass-card upload-zone" id="upload-zone" data-anim="scale-in" data-delay="0.3">
+                <div class="upload-icon" data-anim="float">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                </div>
+                <div class="upload-text">Drag & Drop an image or PDF here</div>
+                <div class="upload-hint">Supports .png, .jpg, .pdf, .docx</div>
+                <button class="btn btn-primary btn-glow" onclick="document.getElementById('file-input').click()">
+                    Browse Files
+                </button>
+                <input type="file" id="file-input" accept="image/*,.pdf,.docx">
+            </div>
+
+            <div id="error-message" class="error-message"></div>
+
+            <!-- Result Area -->
+            <div class="result-container" id="result-container">
+                <!-- Left Panel: Original Image -->
+                <div class="panel glass-card" data-anim="slide-left">
+                    <h2>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                            <polyline points="21 15 16 10 5 21"></polyline>
+                        </svg>
+                        Original Document
+                    </h2>
+                    <div id="preview-container" class="preview-container"></div>
+                </div>
+
+                <!-- Right Panel: Extracted Text -->
+                <div class="panel glass-card" data-anim="slide-right">
+                    <h2>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        Extracted Text
+                    </h2>
+
+                    <div class="text-area-wrapper">
+                        <textarea id="extracted-text" placeholder="Recognized text will appear here..."></textarea>
+                    </div>
+
+                    <div class="controls">
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <input type="checkbox" id="rtl-toggle"
+                                style="cursor: pointer; width: 1.2rem; height: 1.2rem;">
+                            <label for="rtl-toggle" style="cursor: pointer;">RTL Direction (Urdu/Farsi)</label>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <button class="btn magnetic" onclick="document.getElementById('file-input').click()"
+                                id="btn-upload-new">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                Upload New
+                            </button>
+                            <button class="btn magnetic" id="btn-copy">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copy
+                            </button>
+                            <button class="btn btn-primary magnetic" id="btn-download">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                Download .txt
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- Global Loader -->
+    <div class="loader-overlay" id="loader">
+        <div class="spinner"></div>
+        <div class="loader-text">Analyzing Document...</div>
+    </div>
+
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script src="/static/app.js"></script>
+</body>
+
+</html>

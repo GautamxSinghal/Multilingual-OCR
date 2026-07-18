@@ -15,10 +15,10 @@ load_dotenv()
 
 app = FastAPI(title="Multilingual OCR API")
 
-# Mount frontend directory for static HTML/JS/CSS
-frontend_dir = os.path.join(os.path.dirname(__file__), "..", "frontend")
-os.makedirs(frontend_dir, exist_ok=True)
-app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
+# Mount frontend static files
+static_dir = os.path.join(os.path.dirname(__file__), "static")
+os.makedirs(static_dir, exist_ok=True)
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 
 # Configure CORS for frontend communication
@@ -32,7 +32,7 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    index_path = os.path.join(os.path.dirname(__file__), "..", "frontend", "index.html")
+    index_path = os.path.join(os.path.dirname(__file__), "static", "index.html")
     return FileResponse(index_path)
 
 def extract_images_from_pdf(pdf_bytes):
